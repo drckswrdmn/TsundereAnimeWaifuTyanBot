@@ -3,8 +3,9 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from random import choice
 import asyncio
-from aiogram import Bot
+from aiogram import Bot, types
 from phrases import *
+from handlers.client import client
 
 router = Router()
 
@@ -52,3 +53,26 @@ async def showsubscribers(message: Message):
     for uid in subscribers:
         text += f"{uid}\n"
     await message.answer(text)
+
+@router.message(F.text)
+async def chat(message: types.Message):
+    user_text = message.text
+
+    await message.bot.send_chat_action(message.chat.id, "typing")
+
+    try:
+        response = client.responses.create(
+            model="GPT-OSS-120B",
+            input=[
+                {"role": "system", "content": "Ты должна отвечать в стилистике аниме-девочки-цундэре и добавлять один-два стикера, отборажающие твои эмоции"},
+                {"role": "user", "content": user_text}
+            ],
+            max_output_tokens=200
+        )
+
+        await message.answer(response.output_text)
+
+    except Exception as e:
+        print("TsundereAI error:", e)
+        await message.answer("Прости, зайчик, не могу тебе ответить, что-то с интернетом")
+
