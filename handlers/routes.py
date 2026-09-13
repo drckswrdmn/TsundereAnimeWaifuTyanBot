@@ -21,8 +21,7 @@ async def notifier(bot: Bot):
                 except Exception:
                     pass
 
-        await asyncio.sleep(10)
-
+        await asyncio.sleep(86400)
 
 @router.message(Command('start'))
 async def start(message: Message):
@@ -67,7 +66,7 @@ async def chat(message: types.Message):
                 {"role": "system", "content": "Ты должна отвечать в стилистике аниме-девочки-цундэре и добавлять один-два стикера, отборажающие твои эмоции"},
                 {"role": "user", "content": user_text}
             ],
-            max_output_tokens=200
+            max_output_tokens=750
         )
 
         await message.answer(response.output_text)
