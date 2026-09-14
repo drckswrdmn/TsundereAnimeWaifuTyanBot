@@ -16,7 +16,7 @@ async def notifier(bot: Bot):
         if subscribers:
             for user_id in list(subscribers):
                 try:
-                    Hello = choice(choice(tsundere_first_meet))
+                    Hello = choice(tsyndere_hello)
                     await bot.send_message(user_id, Hello)
                 except Exception:
                     pass
